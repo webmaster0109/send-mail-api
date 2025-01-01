@@ -56,16 +56,16 @@ def contact_form_views(request):
         name = request.data.get('name')
         email = request.data.get('email')
         phone = request.data.get('phone')
-        subject = request.data.get('subject')
+        subject_input = request.data.get('subject')
         message = request.data.get('message')
 
         if not all([name, email, phone, subject, message]):
             return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        ContactForm.objects.create(name=name, email=email, phone=phone, subject=subject, message=message)
+        ContactForm.objects.create(name=name, email=email, phone=phone, subject=subject_input, message=message)
 
         subject = f"New Contact Form Submission from {name}"
-        text_content = f"Name: {name}\nEmail: {email}\nPhone: {phone}\nSubject: {subject}\nMessage: {message}"
+        text_content = f"Name: {name}\nEmail: {email}\nPhone: {phone}\nSubject: {subject_input}\nMessage: {message}"
         html_content = f"""
         <html>
             <body>
@@ -74,7 +74,7 @@ def contact_form_views(request):
                 <p><strong>Name:</strong> {name}</p>
                 <p><strong>Email:</strong> {email}</p>
                 <p><strong>Phone:</strong> {phone}</p>
-                <p><strong>Subject:</strong> {subject}</p>
+                <p><strong>Subject:</strong> {subject_input}</p>
                 <p><strong>Message:</strong> {message}</p>
             </body>
         </html>

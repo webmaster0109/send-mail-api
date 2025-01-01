@@ -1,28 +1,40 @@
 const form = document.querySelector('form');
 
-form.addEventListener('submit', function(e) {
+form.addEventListener('submit', async function(e) {
     e.preventDefault();
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
     console.log(data);
 
-    fetch('http://localhost:8000/api/sponsor-mail-form/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-    alert('Form submitted');
-    console.log(JSON.stringify(data));
-    form.reset();
+    try {
+        const response = await fetch('http://localhost:8000/api/sponsor-mail-form/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        
+        if (response.ok) {
+            alert('Form submitted');
+            console.log(result);
+            console.log(JSON.stringify(data));
+            form.reset();
+        } else if (response.status === 400) {
+            console.log(result);
+            alert('Please fill in all fields');
+        } else if (response.status === 500) {
+            console.log(result);
+            alert('Something went wrong, please try again');
+        }
+    } catch (error) {
+        console.error(error);
+    } finally {
+        console.log('done');
+    }
 
 });
     

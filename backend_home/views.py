@@ -37,6 +37,6 @@ def send_email_view(request):
         msg.attach_alternative(html_content, "text/html")
         msg.send()
 
-        return Response({'message': 'Email sent successfully.'}, status=status.HTTP_200_OK)
+        return Response({'success': 'Email sent successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

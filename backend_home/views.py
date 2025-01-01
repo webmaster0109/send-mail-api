@@ -56,16 +56,16 @@ def contact_form_views(request):
         name = request.data.get('name')
         email = request.data.get('email')
         phone = request.data.get('phone')
-        subject_input = request.data.get('subject')
+        subject = request.data.get('subject')
         message = request.data.get('message')
 
         if not all([name, email, phone, subject, message]):
             return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        ContactForm.objects.create(name=name, email=email, phone=phone, subject=subject_input, message=message)
+        ContactForm.objects.create(name=name, email=email, phone=phone, subject=subject, message=message)
 
-        subject = f"New Contact Form Submission from {name}"
-        text_content = f"Name: {name}\nEmail: {email}\nPhone: {phone}\nSubject: {subject_input}\nMessage: {message}"
+        mail_subject = f"New Contact Form Submission from {name}"
+        text_content = f"Name: {name}\nEmail: {email}\nPhone: {phone}\nSubject: {subject}\nMessage: {message}"
         html_content = f"""
         <html>
             <body>
@@ -74,13 +74,13 @@ def contact_form_views(request):
                 <p><strong>Name:</strong> {name}</p>
                 <p><strong>Email:</strong> {email}</p>
                 <p><strong>Phone:</strong> {phone}</p>
-                <p><strong>Subject:</strong> {subject_input}</p>
+                <p><strong>Subject:</strong> {subject}</p>
                 <p><strong>Message:</strong> {message}</p>
             </body>
         </html>
         """
 
-        send_mail_func(subject, text_content, html_content)
+        send_mail_func(mail_subject, text_content, html_content)
 
         return Response({'success': 'Email sent successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:

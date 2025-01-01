@@ -4,6 +4,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+from .models import *
+
 @api_view(["POST"])
 def send_email_view(request):
     try:
@@ -14,6 +16,7 @@ def send_email_view(request):
         if not all([name, email, phone]):
             return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        SponsorForm.objects.create(name=name, email=email, phone=phone)
         subject = f"New Sponsor Form Submission from {name}"
         text_content = f"Name: {name}\nEmail: {email}\nPhone: {phone}"
         html_content = f"""

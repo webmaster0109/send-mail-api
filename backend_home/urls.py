@@ -3,5 +3,5 @@ from .views import send_email_view
 
 
 urlpatterns = [
-    path("send-mail/", send_email_view, name="contact"),
+    path("sponsor-mail-form/", send_email_view, name="contact"),
 ]

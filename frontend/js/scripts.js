@@ -7,7 +7,7 @@ form.addEventListener('submit', async function(e) {
     console.log(data);
 
     try {
-        const response = await fetch('http://localhost:8000/api/sponsor-mail-form/', {
+        const response = await fetch('http://localhost:8000/api/contact-form/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

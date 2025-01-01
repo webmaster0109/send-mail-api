@@ -43,6 +43,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    "https://ahofa.com",
+    "https://www.ahofa.com",
     "http://127.0.0.1:5500",
     "http://localhost:5500",
 ]

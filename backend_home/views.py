@@ -1,11 +1,21 @@
-from django.core.mail import send_mail as send_django_mail
+# from django.core.mail import send_mail as send_django_mail
 from django.core.mail import EmailMultiAlternatives
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
-
 from .models import *
+
+def send_mail_func(subject, text_content, html_content):
+    try:
+        from_email = settings.EMAIL_HOST_USER
+        recipient_list = ['paulsandy321@gmail.com']
+        msg = EmailMultiAlternatives(subject, text_content, from_email, recipient_list)
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+        return True
+    except Exception as e:
+        return str(e)
 
 @api_view(["POST"])
 def send_email_view(request):
@@ -18,6 +28,7 @@ def send_email_view(request):
             return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         SponsorForm.objects.create(name=name, email=email, phone=phone)
+
         subject = f"New Sponsor Form Submission from {name}"
         text_content = f"Name: {name}\nEmail: {email}\nPhone: {phone}"
         html_content = f"""
@@ -31,12 +42,8 @@ def send_email_view(request):
             </body>
         </html>
         """
-        from_email = settings.EMAIL_HOST_USER  # Replace with your actual email
-        recipient_list = ['paulsandy321@gmail.com']  # Replace with your recipient email(s)
 
-        msg = EmailMultiAlternatives(subject, text_content, from_email, recipient_list)
-        msg.attach_alternative(html_content, "text/html")
-        msg.send()
+        send_mail_func(subject, text_content, html_content)
 
         return Response({'success': 'Email sent successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -72,12 +79,36 @@ def contact_form_views(request):
             </body>
         </html>
         """
-        from_email = settings.EMAIL_HOST_USER  # Replace with your actual email
-        recipient_list = ['paulsandy321@gmail.com']
 
-        msg = EmailMultiAlternatives(subject, text_content, from_email, recipient_list)
-        msg.attach_alternative(html_content, "text/html")
-        msg.send()
+        send_mail_func(subject, text_content, html_content)
+
+        return Response({'success': 'Email sent successfully.'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(["POST"])
+def subscribe_view(request):
+    try:
+        email = request.data.get('email')
+
+        if not email:
+            return Response({'error': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        Subscribers.objects.create(email=email)
+
+        subject = "[AHOFA] New Subscriber"
+        text_content = f"Email: {email}"
+        html_content = f"""
+        <html>
+            <body>
+                <h1>Amara Hall of Fame Awards</h1>
+                <h2>New Subscriber</h2>
+                <p><strong>Email:</strong> {email}</p>
+            </body>
+        </html>
+        """
+
+        send_mail_func(subject, text_content, html_content)
 
         return Response({'success': 'Email sent successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:

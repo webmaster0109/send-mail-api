@@ -9,7 +9,7 @@ from .models import *
 def send_mail_func(subject, text_content, html_content):
     try:
         from_email = settings.EMAIL_HOST_USER
-        recipient_list = ['paulsandy321@gmail.com']
+        recipient_list = [from_email]
         msg = EmailMultiAlternatives(subject, text_content, from_email, recipient_list)
         msg.attach_alternative(html_content, "text/html")
         msg.send()

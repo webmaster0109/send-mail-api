@@ -27,13 +27,26 @@ def login_attempt(request):
         return JsonResponse({'status': 'error', 'message': 'Invalid credentials'}, status=401)
     
     if request.user.is_authenticated:
-        return redirect('mail_sys')
+        return redirect('home')
     
     return render(request, template_name="login.html")
 
 def logout_attempt(request):
+    if not request.user.is_authenticated:
+        # domain_link = request.build_absolute_uri('/')
+        return JsonResponse({
+            'status': 'error', 
+            'message': 'User is not logged in. Signin dashboard!',
+            'meta-title': 'Amara hall of Fame Awards - Email Services',
+            'meta-descriptions': 'The Amara Hall of Fame Awards is a prestigious annual celebration dedicated to honoring the achievements and contributions of Indian-origin individuals across the globe. From cinematic icons to business pioneers, from musical talents to philanthropic leaders, we recognize the diverse and exceptional impact of Overseas Indians in fields such as cinema, music, business, technology, sports, fashion, medicine, and philanthropy.',
+            'meta-image': 'https://ik.imagekit.io/5lj5xs7ii/Logo/amara-logo.png',
+            'redirect_link': '/account/login/'}, 
+        status=400)
+    if request.method != "POST":
+        return JsonResponse({'status': 'error', 'message': 'Invalid method requested'}, status=401)
     logout(request)
-    return redirect('login')
+    return JsonResponse({'status': 'success', 'message': 'logged out successfully'}, status=200)
+    
 
 @login_required(login_url='/account/login/')
 def homepage(request):

@@ -11,10 +11,21 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        {% if request.user.is_authenticated %}
         <div class="ms-auto">
-            <a href="javascript:void(0);" style="text-decoration: none; color: #BC1922;">Welcome, {{request.user.username}}</a>
-            <a href="{% url 'logout' %}" class="btn btn-sm btn-success ms-3">logout</a>
+            <div class="d-flex align-items-center">
+              <div>
+                <a href="javascript:void(0);" style="text-decoration: none; color: #BC1922;">Welcome, {{request.user.username}}</a>
+              </div>
+              <div>
+                <a href="#logout-user" id="logoutUser" class="btn btn-sm btn-success ms-3">Logout</a>
+                <form id="logoutUserForm" style="display: none;">
+                  {% csrf_token %}
+                </form>
+              </div>
+            </div>
         </div>
+        {% endif %}
       </div>
     </div>
 </nav>
@@ -57,5 +68,6 @@
       ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
     });
   </script>
+  <script src="/media/js/logout.js"></script>
   <script src="/media/js/send-mails.js"></script>
 {% endblock %}

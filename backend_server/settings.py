@@ -45,6 +45,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    "https://the-flame-send-mail-api.zvgijm.easypanel.host",
     "https://ahofa.com",
     "https://www.ahofa.com",
     "http://127.0.0.1:5500",

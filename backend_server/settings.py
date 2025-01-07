@@ -52,6 +52,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5500",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://the-flame-send-mail-api.zvgijm.easypanel.host",
+]
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = "backend_server.urls"

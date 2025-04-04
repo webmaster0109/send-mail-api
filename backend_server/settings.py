@@ -154,6 +154,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'info@ahofa.com'
-EMAIL_HOST_PASSWORD = 'vpqmupdfwyubnmbw'
+EMAIL_HOST_PASSWORD = 'ldilikyhpvtvybgu'
 # EMAIL_HOST_USER = 'paulsandy321@gmail.com'
 # EMAIL_HOST_PASSWORD = 'qqkxhgkcqopevrqk'

@@ -87,6 +87,35 @@ def contact_form_views(request):
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(["POST"])
+def tickets_subscribe_view(request):
+    try:
+        email = request.data.get('email')
+
+        if not email:
+            return Response({'error': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        TicketSubscribers.objects.create(email=email)
+
+        subject = "[AHOFA] New Ticket Subscriber"
+        text_content = f"Email: {email}"
+        html_content = f"""
+        <html>
+            <body>
+                <h1>Amara Hall of Fame Awards</h1>
+                <h2>New Ticket Subscriber</h2>
+                <p><strong>Email:</strong> {email}</p>
+            </body>
+        </html>
+        """
+
+        send_mail_func(subject, text_content, html_content)
+
+        return Response({'success': 'Email sent successfully.'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["POST"])
 def subscribe_view(request):
     try:
         email = request.data.get('email')
